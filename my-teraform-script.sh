@@ -3,7 +3,7 @@
 # Repository name
 REPO_NAME="my-terraform-learning"
 
-# Create repository directory
+# Create and enter the repository directory
 mkdir -p "$REPO_NAME"
 cd "$REPO_NAME" || exit 1
 
@@ -13,123 +13,159 @@ git init
 # Create root files
 touch README.md LICENSE .gitignore
 
-# Function to create a topic folder and matching notes file
-create_topic() {
-    FOLDER="$1"
-    FILE="$2"
+# Function to create a course section
+create_section() {
+    FOLDER_NAME="$1"
+    FILE_NAME="$2"
+    CREATE_TERRAFORM_FOLDER="$3"
 
-    mkdir -p "$FOLDER"
-    touch "$FOLDER/$FILE"
+    mkdir -p "$FOLDER_NAME"
+    touch "$FOLDER_NAME/$FILE_NAME.md"
+
+    if [ "$CREATE_TERRAFORM_FOLDER" = "yes" ]; then
+        mkdir -p "$FOLDER_NAME/terraform-files"
+        touch "$FOLDER_NAME/terraform-files/.gitkeep"
+    fi
 }
 
 # Create course sections
-create_topic "01-introduction-to-terraform" "introduction-to-terraform.md"
+create_section \
+"01-understand-infrastructure-as-code-iac-concepts" \
+"understand-infrastructure-as-code-iac-concepts" \
+"no"
 
-create_topic "02-terraform-setup-and-basics" "terraform-setup-and-basics.md"
+create_section \
+"02-terraform-fundamentals" \
+"terraform-fundamentals" \
+"yes"
 
-create_topic "03-terraform-core-workflow" "terraform-core-workflow.md"
+create_section \
+"03-core-terraform-workflow" \
+"core-terraform-workflow" \
+"yes"
 
-create_topic "04-terraform-configuration" "terraform-configuration.md"
+create_section \
+"04-terraform-configuration" \
+"terraform-configuration" \
+"yes"
 
-create_topic "05-variables-and-meta-arguments" "variables-and-meta-arguments.md"
+create_section \
+"05-variables-precedence-and-data-types-with-handson" \
+"variables-precedence-and-data-types-with-handson" \
+"yes"
 
-create_topic "06-expressions-and-data-sources" "expressions-and-data-sources.md"
+create_section \
+"06-data-sources-functions-expressions-and-conditions" \
+"data-sources-functions-expressions-and-conditions" \
+"yes"
 
-create_topic "07-state-management" "state-management.md"
+create_section \
+"07-state-file-advance" \
+"state-file-advance" \
+"yes"
 
-create_topic "08-debugging-and-troubleshooting" "debugging-and-troubleshooting.md"
+create_section \
+"08-crucial-concepts" \
+"crucial-concepts" \
+"yes"
 
-create_topic "09-modules-and-workspaces" "modules-and-workspaces.md"
+create_section \
+"09-terraform-modules" \
+"terraform-modules" \
+"yes"
 
-create_topic "10-provisioners" "provisioners.md"
+create_section \
+"10-provisioners-good-to-know" \
+"provisioners-good-to-know" \
+"yes"
 
-create_topic "11-hcp-terraform-cloud" "hcp-terraform-cloud.md"
+create_section \
+"11-hcp-terraform" \
+"hcp-terraform" \
+"yes"
 
-create_topic "12-exam-preparation" "exam-preparation.md"
+create_section \
+"12-real-time-based-practice-test" \
+"real-time-based-practice-test" \
+"no"
 
-# Create practical Terraform directories
-PRACTICE_DIRS=(
-    "02-terraform-setup-and-basics/terraform-files"
-    "03-terraform-core-workflow/terraform-files"
-    "04-terraform-configuration/terraform-files"
-    "05-variables-and-meta-arguments/terraform-files"
-    "06-expressions-and-data-sources/terraform-files"
-    "07-state-management/terraform-files"
-    "08-debugging-and-troubleshooting/terraform-files"
-    "09-modules-and-workspaces/terraform-files"
-    "10-provisioners/terraform-files"
-    "11-hcp-terraform-cloud/terraform-files"
-)
+# Create hands-on project folders
+mkdir -p hands-on-projects/aws-vpc
+mkdir -p hands-on-projects/aws-ec2
+mkdir -p hands-on-projects/aws-s3
+mkdir -p hands-on-projects/aws-3-tier-architecture
 
-for DIR in "${PRACTICE_DIRS[@]}"; do
-    mkdir -p "$DIR"
-    touch "$DIR/.gitkeep"
-done
-
-# Create hands-on project directories
-PROJECTS=(
-    "aws-vpc"
-    "aws-ec2"
-    "aws-s3"
-    "aws-3-tier-architecture"
-)
-
-for PROJECT in "${PROJECTS[@]}"; do
-    mkdir -p "hands-on-projects/$PROJECT"
-    touch "hands-on-projects/$PROJECT/.gitkeep"
-done
+touch hands-on-projects/aws-vpc/.gitkeep
+touch hands-on-projects/aws-ec2/.gitkeep
+touch hands-on-projects/aws-s3/.gitkeep
+touch hands-on-projects/aws-3-tier-architecture/.gitkeep
 
 # Create .gitignore
 cat > .gitignore <<'EOF'
-# Terraform state
+# Terraform files
+.terraform/
 *.tfstate
 *.tfstate.*
-
-# Terraform working directory
-.terraform/
-
-# Sensitive files
-*.tfvars
-*.tfvars.json
-
-# Crash logs
 crash.log
 crash.*.log
 
-# Local override files
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Terraform override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Keep the dependency lock file
-# .terraform.lock.hcl should be committed
+# OS files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
 EOF
 
 # Create README
 cat > README.md <<'EOF'
 # My Terraform Learning
 
-My personal Terraform learning journey.
+This repository contains my notes, hands-on practice, and projects while preparing for the HashiCorp Certified: Terraform Associate (004) certification.
 
-## Contents
+## Course Sections
 
-- Terraform Associate (004) preparation
-- Concise notes and definitions
-- Acronyms and memory tricks
-- Hands-on Terraform practice
-- Interview preparation
-- Troubleshooting scenarios
-- Real-world infrastructure projects
+1. Understand Infrastructure as Code (IaC) Concepts
+2. Terraform Fundamentals
+3. Core Terraform Workflow
+4. Terraform Configuration
+5. Variables Precedence and Data Types with Hands-on
+6. Data Sources, Functions, Expressions & Conditions
+7. State File Advance
+8. Crucial Concepts
+9. Terraform Modules
+10. Provisioners — Good to Know
+11. HCP Terraform
+12. Real-Time Based Practice Test
 
-## Learning Approach
+## Learning Workflow
 
-Udemy Lesson → Notes → Hands-on Practice → Interview Preparation
+Udemy Lesson → Markdown Notes → Hands-on Practice → Interview Preparation
+
+## Repository Includes
+
+- Concise Terraform notes
+- Memory tricks and acronyms
+- Terraform commands
+- Hands-on configuration files
+- Interview questions and scenarios
+- Troubleshooting notes
+- Practical Terraform projects
 EOF
 
+# Display the created folder structure
 echo ""
-echo "✅ Repository structure created successfully!"
-echo "📂 Location: $(pwd)"
+echo "Terraform learning repository created successfully!"
 echo ""
-echo "📁 Repository structure:"
-find . -not -path './.git/*' | sort
+echo "Repository structure:"
+find . -not -path '*/.git/*' | sort
